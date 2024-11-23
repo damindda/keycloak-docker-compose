@@ -1,0 +1,37 @@
+name: NorthDots Keycloak
+
+on:
+    push:
+        branches:
+            - main
+env:
+    GITHUB_REGISTRY: ghcr.io
+    DOCKER_IMAGE: ${{ github.repository }}
+    POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+    POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+    POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+    DB_VENDOR: ${{ secrets.DB_VENDOR }}
+    DB_ADDR: ${{ secrets.DB_ADDR }}
+    DB_DATABASE: ${{ secrets.DB_DATABASE }}
+    DB_USER: ${{ secrets.DB_USER }}
+    DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
+    KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+    KEYCLOAK_USER: ${{ secrets.KEYCLOAK_USER }}
+    KC_DB_USERNAME: ${{ secrets.KC_DB_USERNAME }}
+    KC_DB_PASSWORD: ${{ secrets.KC_DB_PASSWORD }}
+    KC_DB: ${{ secrets.KC_DB }}
+    KC_DB_URL: ${{ secrets.KC_DB_URL }}
+    DOCKER_BUILDKIT: 1
+    DOCKER_CLI_AGGREGATE: 1
+
+jobs:    
+    build-push-docker-image:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Build and push the image
+              run: |
+                echo ${{ secrets.GH_DOCKER_PAT }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+                docker build . -t ghcr.io/damindda/sl-tuts-keycloak:latest
+                docker push ghcr.io/damindda/sl-tuts-keycloak:latest
