@@ -1,0 +1,49 @@
+services:
+  sltutskeycloakpostgresdbserver:
+    image: postgres:latest
+    container_name: sltutskeycloakpostgresdbserver
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - keycloak_postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  sltutskeycloakserver:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: sltutskeycloakserver
+    environment:
+      - KC_HEALTH_ENABLED=true
+      - KC_METRICS_ENABLED=true
+      - KC_HTTP_ENABLED=true
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KEYCLOAK_SSL_REQUIRED=none
+      - KC_HOSTNAME_STRICT_BACKCHANNEL=false
+      - KC_HOSTNAME=localhost
+      - KC_HOSTNAME_PORT=8080
+      - DB_VENDOR=${DB_VENDOR}
+      - DB_ADDR=${DB_ADDR}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - KEYCLOAK_USER=${KEYCLOAK_USER}
+      - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
+      - KC_DB=${KC_DB}
+      - KC_DB_URL=${KC_DB_URL}
+      - KC_DB_USERNAME=${KC_DB_USERNAME}
+      - KC_DB_PASSWORD=${KC_DB_PASSWORD}
+    ports:
+      - 8080:8080
+      - 9000:9000
+    depends_on:
+      - sltutskeycloakpostgresdbserver
+    restart: unless-stopped
+    command: start
+
+volumes:
+  keycloak_postgres_data:
