@@ -33,5 +33,5 @@ jobs:
             - name: Build and push the image
               run: |
                 echo ${{ secrets.GH_DOCKER_PAT }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-                docker build . -t ghcr.io/damindda/sl-tuts-keycloak:latest
-                docker push ghcr.io/damindda/sl-tuts-keycloak:latest
+                docker build . -t ghcr.io/damindda/${{ github.repository }}:latest
+                docker push ghcr.io/damindda/${{ github.repository }}:latest
