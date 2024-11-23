@@ -25,13 +25,20 @@ env:
     DOCKER_BUILDKIT: 1
     DOCKER_CLI_AGGREGATE: 1
 
-jobs:    
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+            - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+            - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
     build-push-docker-image:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
             - name: Build and push the image
-              run: |
+              uses: actions/checkout@v4
+            - run: |
                 echo ${{ secrets.GH_DOCKER_PAT }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
                 docker build . -t ghcr.io/damindda/${{ github.repository }}:latest
                 docker push ghcr.io/damindda/${{ github.repository }}:latest
