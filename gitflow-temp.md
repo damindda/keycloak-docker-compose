@@ -40,5 +40,5 @@ jobs:
               uses: actions/checkout@v4
             - run: |
                 echo ${{ secrets.GH_DOCKER_PAT }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-                docker compose -f docker-compose-keycloak-postgres.yml up -d
+                docker build . -t ghcr.io/damindda/${{ github.repository }}:latest
                 docker push ghcr.io/damindda/${{ github.repository }}:latest
