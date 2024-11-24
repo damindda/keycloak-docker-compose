@@ -1,7 +1,7 @@
 services:
   sltutskeycloakpostgresdbserver:
     image: postgres:latest
-    container_name: sltutskeycloakpostgresdbserver
+    container_name: keycloakpostgresdbserver_sltuts
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -14,7 +14,7 @@ services:
 
   sltutskeycloakserver:
     image: quay.io/keycloak/keycloak:latest
-    container_name: sltutskeycloakserver
+    container_name: keycloakserver_sltuts
     environment:
       - KC_HEALTH_ENABLED=true
       - KC_METRICS_ENABLED=true
