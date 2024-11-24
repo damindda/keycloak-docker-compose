@@ -17,7 +17,6 @@ env:
     DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
     KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
-    KEYCLOAK_USER: ${{ secrets.KEYCLOAK_USER }}
     KC_DB_USERNAME: ${{ secrets.KC_DB_USERNAME }}
     KC_DB_PASSWORD: ${{ secrets.KC_DB_PASSWORD }}
     KC_DB: ${{ secrets.KC_DB }}
