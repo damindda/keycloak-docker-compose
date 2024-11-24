@@ -39,7 +39,7 @@ services:
       - KC_DB_PASSWORD=${KC_DB_PASSWORD}
     ports:
       - 8080:8080
-      - 8443:8443
+      - 9000:9000
     depends_on:
       - sltutskeycloakpostgresdbserver
     restart: unless-stopped
