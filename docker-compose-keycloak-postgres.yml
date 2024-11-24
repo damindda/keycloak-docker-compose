@@ -1,20 +1,20 @@
 services:
-  sltutskeycloakpostgresdbserver:
+  sltuts_postgres:
+    env_file: ".env"
     image: postgres:latest
-    container_name: keycloakpostgresdbserver_sltuts
+    container_name: sltuts_postgres_container
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    ports:
-      - 5432:5432
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
-      - keycloak_postgres_data:/var/lib/postgresql/data
+      - sltuts_keycloak_postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
-  sltutskeycloakserver:
+  sltuts_keycloak:
+    env_file: ".env"
     image: quay.io/keycloak/keycloak:latest
-    container_name: keycloakserver_sltuts
+    container_name: sltuts_keycloak_container
     environment:
       - KC_HEALTH_ENABLED=true
       - KC_METRICS_ENABLED=true
@@ -23,26 +23,25 @@ services:
       - KEYCLOAK_SSL_REQUIRED=none
       - KC_HOSTNAME_STRICT_BACKCHANNEL=false
       - KC_HOSTNAME=${KC_HOSTNAME}
-      - KC_HOSTNAME_PORT=8080
+      - KC_HOSTNAME_PORT=${KC_HOSTNAME_PORT}
       - DB_VENDOR=${DB_VENDOR}
       - DB_ADDR=${DB_ADDR}
-      - DB_DATABASE=${DB_DATABASE}
-      - DB_USER=${DB_USER}
+      - DB_DATABASE=${DB_NAME}
+      - DB_USER=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
       - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
       - KC_DB=${KC_DB}
       - KC_DB_URL=${KC_DB_URL}
-      - KC_DB_USERNAME=${KC_DB_USERNAME}
-      - KC_DB_PASSWORD=${KC_DB_PASSWORD}
+      - KC_DB_USERNAME=${DB_USERNAME}
+      - KC_DB_PASSWORD=${DB_PASSWORD}
     ports:
       - 8080:8080
-      - 8443:8443
       - 9000:9000
     depends_on:
-      - sltutskeycloakpostgresdbserver
+      - sltuts_postgres
     restart: unless-stopped
     command: start
 
 volumes:
-  keycloak_postgres_data:
+  sltuts_keycloak_postgres_data:
